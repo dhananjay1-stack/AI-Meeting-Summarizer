@@ -73,6 +73,23 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     LOG_FORMAT: str = "json"  # json | text
 
+    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def parse_allowed_origins(cls, v):
+        """Parse ALLOWED_ORIGINS from env var — handles JSON arrays, comma-separated, or plain strings."""
+        import json as _json
+        if isinstance(v, list):
+            return v
+        if isinstance(v, str):
+            v = v.strip()
+            if v.startswith("["):
+                try:
+                    return _json.loads(v)
+                except _json.JSONDecodeError:
+                    pass
+            return [s.strip() for s in v.split(",") if s.strip()]
+        return v
+
     @field_validator("UPLOAD_DIR")
     @classmethod
     def ensure_upload_dir(cls, v: str) -> str:
