@@ -190,6 +190,45 @@ class GeminiProvider(AIProvider):
         return "gemini"
 
 
+class GroqProvider(AIProvider):
+    """Groq API provider — free tier with fast inference."""
+
+    def __init__(self):
+        self.api_key = settings.GROQ_API_KEY
+        self.model = settings.GROQ_MODEL
+        if not self.api_key:
+            raise ValueError("GROQ_API_KEY not configured. Get a free key at https://console.groq.com")
+
+    async def generate(self, prompt: str, system_prompt: str = "") -> str:
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": prompt})
+
+        async with httpx.AsyncClient(timeout=120) as client:
+            response = await client.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {self.api_key}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": self.model,
+                    "messages": messages,
+                    "temperature": 0.3,
+                },
+            )
+            response.raise_for_status()
+            data = response.json()
+            return data["choices"][0]["message"]["content"]
+
+    def get_model_name(self) -> str:
+        return self.model
+
+    def get_provider_name(self) -> str:
+        return "groq"
+
+
 def get_ai_provider(provider_name: str | None = None) -> AIProvider:
     """Factory function to get the configured AI provider."""
     name = provider_name or settings.AI_PROVIDER
@@ -199,6 +238,7 @@ def get_ai_provider(provider_name: str | None = None) -> AIProvider:
         "openai": OpenAIProvider,
         "claude": ClaudeProvider,
         "gemini": GeminiProvider,
+        "groq": GroqProvider,
     }
 
     provider_class = providers.get(name)

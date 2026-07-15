@@ -60,6 +60,9 @@ class Settings(BaseSettings):
     CLAUDE_MODEL: str = "claude-sonnet-4-20250514"
     GEMINI_API_KEY: Optional[str] = None
     GEMINI_MODEL: str = "gemini-2.0-flash"
+    GROQ_API_KEY: Optional[str] = None
+    GROQ_MODEL: str = "llama-3.1-8b-instant"
+    GROQ_WHISPER_MODEL: str = "whisper-large-v3"
 
     # ── Speaker Diarization ──────────────────────────────────────
     ENABLE_DIARIZATION: bool = False
