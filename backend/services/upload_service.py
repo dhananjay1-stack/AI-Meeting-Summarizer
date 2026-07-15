@@ -64,15 +64,23 @@ class UploadService:
         # 3. Validate MIME type using magic bytes (with fallback)
         if HAS_MAGIC:
             detected_mime = magic.from_buffer(file_data[:8192], mime=True)
+            # If magic can't identify, fall back to extension-based detection
+            if detected_mime == "application/octet-stream":
+                detected_mime = _EXT_TO_MIME.get(ext, detected_mime)
         else:
             # Fallback: derive MIME from extension
             detected_mime = _EXT_TO_MIME.get(ext, "application/octet-stream")
 
         if detected_mime not in ALLOWED_MIME_TYPES:
-            raise FileUploadError(
-                f"Unsupported file type: {detected_mime}. "
-                f"Allowed types: audio/mpeg, audio/wav, audio/ogg, audio/flac, audio/mp4, etc."
-            )
+            # Last resort: if the extension is in the allowed list, trust it
+            fallback_mime = _EXT_TO_MIME.get(ext)
+            if fallback_mime and fallback_mime in ALLOWED_MIME_TYPES:
+                detected_mime = fallback_mime
+            else:
+                raise FileUploadError(
+                    f"Unsupported file type: {detected_mime}. "
+                    f"Allowed types: audio/mpeg, audio/wav, audio/ogg, audio/flac, audio/mp4, etc."
+                )
 
         # 4. Store file with random filename
         stored_filename, file_path, checksum = await storage.save(file_data, original_filename)
