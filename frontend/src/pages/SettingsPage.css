@@ -1,0 +1,95 @@
+.settings-page { min-height: 100vh; }
+
+.settings-card {
+  padding: var(--space-xl);
+}
+.settings-card:hover { transform: none; }
+
+.settings-group {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.settings-group:last-of-type {
+  border-bottom: none;
+}
+
+.settings-group h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  margin-bottom: var(--space-lg);
+}
+
+.settings-field {
+  margin-bottom: var(--space-lg);
+}
+
+.settings-field label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.settings-field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.settings-hint {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+}
+
+/* ── Toggle ──────────────────────────────────────── */
+.settings-toggle-label {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.settings-toggle {
+  width: 44px;
+  height: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+.settings-toggle.active {
+  background: var(--accent-purple);
+  border-color: var(--accent-purple);
+}
+
+.settings-toggle-thumb {
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all var(--transition-base);
+}
+
+.settings-toggle.active .settings-toggle-thumb {
+  left: 22px;
+}
+
+/* ── Save ─────────────────────────────────────────── */
+.settings-save {
+  width: 100%;
+  justify-content: center;
+  padding: 14px;
+  font-size: var(--font-size-base);
+}

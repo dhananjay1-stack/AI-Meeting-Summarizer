@@ -1,0 +1,32 @@
+[project]
+name = "ai-meeting-summarizer"
+version = "1.0.0"
+description = "Production-ready AI Meeting Summarizer with transcription, summarization, and export"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+select = ["E", "F", "I", "N", "W", "UP", "S", "B", "A", "C4", "SIM"]
+ignore = ["S101", "S603", "S607"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["backend"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.pytest.ini_options]
+testpaths = ["backend/tests"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks integration tests",
+]
+
+[tool.coverage.run]
+source = ["backend"]
+omit = ["backend/tests/*", "backend/database/migrations/*"]

@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: ai-meeting-summarizer
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///./meeting_summarizer.db
+      - key: AI_PROVIDER
+        value: ollama
+      - key: ALLOWED_ORIGINS
+        value: '["*"]'
+      - key: PORT
+        value: "10000"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: RATE_LIMIT_DEFAULT
+        value: 60/minute
+      - key: RATE_LIMIT_AUTH
+        value: 10/minute

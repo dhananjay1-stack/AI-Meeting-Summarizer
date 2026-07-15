@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # ── Backend API ─────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meeting-summarizer-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./meeting_summarizer.db
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-change-me-in-production}
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - AI_PROVIDER=ollama
+      - OLLAMA_MODEL=gemma3
+      - ENVIRONMENT=production
+      - DEBUG=false
+    volumes:
+      - upload_data:/app/uploads
+      - db_data:/app
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  # ── Frontend ────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: meeting-summarizer-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # ── Ollama (Local LLM) ─────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: meeting-summarizer-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    # GPU support (uncomment if you have NVIDIA GPU):
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+volumes:
+  upload_data:
+  db_data:
+  ollama_data:

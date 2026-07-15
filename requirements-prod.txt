@@ -1,0 +1,37 @@
+# ============================================================
+# AI Meeting Summarizer — Production Dependencies
+# Optimized for Render free tier deployment
+# ============================================================
+
+# ── Web Framework ────────────────────────────────────────────
+fastapi==0.115.12
+uvicorn[standard]==0.34.3
+python-multipart==0.0.20
+
+# ── Database ─────────────────────────────────────────────────
+sqlalchemy[asyncio]==2.0.41
+aiosqlite==0.21.0
+
+# ── Authentication & Security ────────────────────────────────
+python-jose[cryptography]==3.4.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.3.0
+slowapi==0.1.9
+
+# ── Validation & Settings ───────────────────────────────────
+pydantic==2.11.4
+pydantic-settings==2.9.1
+email-validator==2.2.0
+
+# ── AI – LLM Providers ──────────────────────────────────────
+httpx==0.28.1
+
+# ── Export ───────────────────────────────────────────────────
+reportlab==4.4.0
+python-docx==1.1.2
+
+# ── File Validation ─────────────────────────────────────────
+python-magic-bin==0.4.14; sys_platform == "win32"
+
+# ── Logging ──────────────────────────────────────────────────
+structlog==25.4.0

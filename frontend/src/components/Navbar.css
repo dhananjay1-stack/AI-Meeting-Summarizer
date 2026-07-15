@@ -1,0 +1,50 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-lg);
+  margin-bottom: var(--space-lg);
+  border-radius: var(--radius-lg);
+  position: sticky;
+  top: var(--space-md);
+  z-index: 100;
+}
+
+.navbar:hover {
+  transform: none;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.navbar-brand-text {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.navbar-user {
+  padding: 0 var(--space-sm);
+}
+
+.navbar-username {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .navbar-username {
+    display: none;
+  }
+}
