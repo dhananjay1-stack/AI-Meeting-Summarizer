@@ -34,8 +34,11 @@ class TranscriptionService:
                 )
                 logger.info("Whisper model loaded successfully.")
             except ImportError:
-                logger.error("faster-whisper not installed. Install with: pip install faster-whisper")
-                raise
+                raise RuntimeError(
+                    "Transcription is not available on this server. "
+                    "The 'faster-whisper' library is not installed. "
+                    "This feature requires a server with sufficient resources and the faster-whisper package."
+                )
             except Exception as e:
                 logger.error(f"Failed to load Whisper model: {e}")
                 raise

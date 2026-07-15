@@ -16,7 +16,7 @@ services:
       - key: AI_PROVIDER
         value: ollama
       - key: ALLOWED_ORIGINS
-        value: '["*"]'
+        value: "*"
       - key: PORT
         value: "10000"
       - key: LOG_LEVEL
@@ -25,3 +25,5 @@ services:
         value: 60/minute
       - key: RATE_LIMIT_AUTH
         value: 10/minute
+      - key: WHISPER_MODEL_SIZE
+        value: tiny
