@@ -4,7 +4,7 @@ Uses Pydantic BaseSettings for validation and type coercion.
 """
 
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings
@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # ── Server ───────────────────────────────────────────────────
     HOST: str = "0.0.0.0"
     PORT: int = 8000
-    ALLOWED_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    ALLOWED_ORIGINS: Union[list[str], str] = ["http://localhost:5173", "http://localhost:3000"]
 
     # ── Database ─────────────────────────────────────────────────
     DATABASE_URL: str = "sqlite+aiosqlite:///./meeting_summarizer.db"
@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     # ── File Upload ──────────────────────────────────────────────
     UPLOAD_DIR: str = "./uploads"
     MAX_UPLOAD_SIZE_MB: int = 500
-    ALLOWED_AUDIO_EXTENSIONS: list[str] = [
+    ALLOWED_AUDIO_EXTENSIONS: Union[list[str], str] = [
         ".mp3", ".wav", ".m4a", ".ogg", ".flac", ".webm", ".mp4", ".wma",
     ]
 
@@ -73,9 +73,9 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     LOG_FORMAT: str = "json"  # json | text
 
-    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @field_validator("ALLOWED_ORIGINS", "ALLOWED_AUDIO_EXTENSIONS", mode="before")
     @classmethod
-    def parse_allowed_origins(cls, v):
+    def parse_list_or_str_fields(cls, v):
         """Parse ALLOWED_ORIGINS from env var — handles JSON arrays, comma-separated, or plain strings."""
         import json as _json
         if isinstance(v, list):
